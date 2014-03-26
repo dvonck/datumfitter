@@ -1,0 +1,62 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 13.04.2 ] */
+
+/* [wxMaxima: input   start ] */
+"Geodetic to Geocentric Latitude";
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+"WGS84 Spheroid";
+a:6378137;
+b:6356752.314;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+e: sqrt((a^2 - b^2) / a^2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Rn(%phi) = a / sqrt(1 - e^2 * sin(%phi)^2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+lat:float((53+48/60+33.820/3600)*3.1415926535897932384626433832795/180);
+lon:float((2+7/60+46.380/3600)*3.1415926535897932384626433832795/180);
+h:73.0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+v:a / sqrt(1 - e^2 * sin(lat)^2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+"Geographic to Geocentric";
+X:(v+h) * cos(lat) * cos(lon);
+Y:(v+h) * cos(lat) * sin(lon);
+Z:((1-e^2)*v+h)*sin(lat);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+"Geocentric to Geographic by Iteration";
+%phi0:45.0*3.1415926535897932384626433832795/180;
+%phi1:atan2((Z+e^2*v*sin(%phi0)), (X^2+Y^2)^0.5);
+%phi2:atan2((Z+e^2*v*sin(%phi1)), (X^2+Y^2)^0.5);
+%phi3:atan2((Z+e^2*v*sin(%phi2)), (X^2+Y^2)^0.5);
+%phi4:atan2((Z+e^2*v*sin(%phi3)), (X^2+Y^2)^0.5);
+%phi5:atan2((Z+e^2*v*sin(%phi4)), (X^2+Y^2)^0.5);
+%phi6:atan2((Z+e^2*v*sin(%phi5)), (X^2+Y^2)^0.5);
+%lambda:atan2(Y,X);
+h1:X * sec(%lambda) * sec(%phi6) - v;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+"Geocentric to Geographic Direct";
+%epsilon:e^2/(1-e^2);
+p:(X^2+Y^2)^0.5;
+q:atan2((Z*a),(p*b));
+%phi7:atan2((Z + %epsilon * b * sin(q)^3), (p-e^2*a*cos(q)^3));
+h2:(p/cos(%phi7)) - v;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

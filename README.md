@@ -16,6 +16,8 @@ geocentric translation model of the form
 
 with parameters dX, dY, dZ that are estimates using least squares. 
 
+or the seven parameter Helmert transform 
+
 The code was written for Python 2.7.6 with a dependency on scipy (http://www.scipy.org).
 
 The script currently uses a csv file that consists of the following columns
@@ -28,5 +30,4 @@ The script currently uses a csv file that consists of the following columns
 7. Target height in m above ellipsoid
 
 TODO:
-I would like to implement the Helmert 7 Parameter Model as well to see if this will 
-give a better fit to the dataset included.
+Try to get valid gradients for the loss function to make the non-linear least squares iterations converge faster.
